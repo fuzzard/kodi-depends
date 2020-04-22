@@ -1,0 +1,9 @@
+set(PKG_NAME "JsonSchemaBuilder")
+set(PKG_VERSION "1.0")
+set(PKG_SHA256 "dcbe8648b21b2988d4d42fe545a2496928c6451133635a3b3c8280c0e8896959")
+set(PKG_ARCHIVE "${PKG_NAME}-${PKG_VERSION}.tar.gz")
+set(PKG_DEPENDS_NATIVE "toolchain")
+set(PKG_DEPENDS_TARGET "")
+set(PKG_TOOLCHAIN "autotools")
+set(PKG_AUTORECONF ON)
+
