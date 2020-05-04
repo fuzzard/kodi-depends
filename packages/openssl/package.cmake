@@ -16,6 +16,11 @@ if(CORE_SYSTEM_NAME STREQUAL linux)
   endif()
 elseif(CORE_SYSTEM_NAME STREQUAL osx)
   set(OPENSSL_PLATFORM darwin64-${WITH_CPU}-cc)
+elseif(CORE_SYSTEM_NAME STREQUAL darwin_embedded)
+  set(OPENSSL_PLATFORM iphoneos-cross)
+  if(CORE_PLATFORM_NAME_LC STREQUAL tvos)
+    set(OPENSSL_OPTIONS no-async)
+  endif()
 elseif(CORE_SYSTEM_NAME STREQUAL android)
   set(OPENSSL_PLATFORM linux-generic32)
   set(OPENSSL_OPTIONS -D__ANDROID_API__=${WITH_NDK_API})
@@ -23,15 +28,24 @@ endif()
 
 # todo: sed patches
 
-set(PKG_CONFIGURE_OPTS_TARGET "no-shared"
+set(PKG_CONFIGURE_OPTS_TARGET "${OPENSSL_PLATFORM}"
+                              "no-shared"
                               "zlib"
-                              "no-asm"
                               "--prefix=${INSTALL_PREFIX_TARGET}"
-                              "--libdir=lib"
-                              "--with-zlib-include=${INSTALL_PREFIX_TARGET}/include"
-                              "--with-zlib-lib=${INSTALL_PREFIX_TARGET}/lib"
-                              "${OPENSSL_PLATFORM}"
                               "${OPENSSL_OPTIONS}")
+
+# Current PR to enable asm for darwin_embedded platforms
+# Only reason ive pulled the no-asm out separately
+if(CORE_SYSTEM_NAME STREQUAL darwin_embedded)
+  list(APPEND PKG_CONFIGURE_OPTS_TARGET "no-asm")
+elseif(CORE_PLATFORM_NAME_LC STREQUAL osx)
+  list(APPEND PKG_CONFIGURE_OPTS_TARGET "no-asm")
+else()
+  list(APPEND PKG_CONFIGURE_OPTS_TARGET "no-asm"
+                                        "--libdir=lib"
+                                        "--with-zlib-include=${INSTALL_PREFIX_TARGET}/include"
+                                        "--with-zlib-lib=${INSTALL_PREFIX_TARGET}/lib")
+endif()
 
 set(PKG_CONFIGURE_COMMAND_TARGET ./Configure ${PKG_CONFIGURE_OPTS_TARGET})
 
