@@ -64,24 +64,26 @@ elseif(CORE_PLATFORM_NAME_LC STREQUAL android)
 
   list(APPEND WITH_TARGET_CFLAGS "-I${INSTALL_PREFIX_TARGET}/include/android-${WITH_NDK_API}")
 
-elseif(CORE_PLATFORM_NAME_LC STREQUAL tvos)
+elseif(CORE_PLATFORM_NAME_LC STREQUAL tvos OR CORE_PLATFORM_NAME_LC STREQUAL ios)
   set(CMAKE_SYSTEM_NAME Darwin)
   set(CORE_SYSTEM_NAME darwin_embedded)
   set(MESON_SYSTEM darwin)
 
-  list(APPEND WITH_TARGET_CFLAGS "-ftree-vectorize -pipe -Wno-trigraphs -fpascal-strings -Wreturn-type -Wunused-variable -fmessage-length=0 -gdwarf-2 -Wno-error=implicit-function-declaration -fembed-bitcode -fheinous-gnu-extensions -no-cpp-precomp")
-  list(APPEND WITH_TARGET_CXXFLAGS "-frtti")
-  list(APPEND WITH_TARGET_LDFLAGS "-Wl,--exclude-libs,libgcc.a -Wl,--exclude-libs,libatomic.a -L$prefix/$deps_dir/lib/android-$use_ndk_api -stdlib=libc++")
+  list(APPEND WITH_TARGET_CFLAGS "-fheinous-gnu-extensions -no-cpp-precomp -ftree-vectorize -pipe -Wno-trigraphs -fpascal-strings -Wreturn-type -Wunused-variable -fmessage-length=0 -gdwarf-2 -Wno-error=implicit-function-declaration -arch ${WITH_CPU} -isysroot ${WITH_SDK_PATH}")
+  list(APPEND WITH_TARGET_CXXFLAGS "-std=c++14 -no-cpp-precomp -stdlib=libc++ -arch ${WITH_CPU} -isysroot ${WITH_SDK_PATH}")
+  list(APPEND WITH_TARGET_LDFLAGS "-stdlib=libc++ -arch ${WITH_CPU} -liconv -Wl,-search_paths_first -L${WITH_SDK_PATH}/usr/lib -isysroot ${WITH_SDK_PATH} ")
 
-elseif(CORE_PLATFORM_NAME_LC STREQUAL ios)
-  set(CMAKE_SYSTEM_NAME Darwin)
-  set(CORE_SYSTEM_NAME darwin_embedded)
-  set(MESON_SYSTEM darwin)
-
-  list(APPEND WITH_TARGET_CFLAGS "-ftree-vectorize -pipe -Wno-trigraphs -fpascal-strings -Wreturn-type -Wunused-variable -fmessage-length=0 -gdwarf-2 -Wno-error=implicit-function-declaration -fembed-bitcode -fheinous-gnu-extensions -no-cpp-precomp")
-  list(APPEND WITH_TARGET_CXXFLAGS "-frtti")
-  list(APPEND WITH_TARGET_LDFLAGS "-Wl,--exclude-libs,libgcc.a -Wl,--exclude-libs,libatomic.a -L$prefix/$deps_dir/lib/android-$use_ndk_api -stdlib=libc++")
-
+  if(CORE_PLATFORM_NAME_LC STREQUAL tvos)
+    # tvos specific
+    list(APPEND WITH_TARGET_CFLAGS "-fembed-bitcode -mappletvos-version-min=11.0")
+    list(APPEND WITH_TARGET_CXXFLAGS "-fembed-bitcode -mappletvos-version-min=11.0")
+    list(APPEND WITH_TARGET_LDFLAGS "-mappletvos-version-min=11.0")
+  elseif(CORE_PLATFORM_NAME_LC STREQUAL ios)
+    # ios specific
+    list(APPEND WITH_TARGET_CFLAGS "-miphoneos-version-min=11.0")
+    list(APPEND WITH_TARGET_CXXFLAGS "-miphoneos-version-min=11.0")
+    list(APPEND WITH_TARGET_LDFLAGS "-miphoneos-version-min=11.0")
+  endif()
 elseif(CORE_PLATFORM_NAME_LC STREQUAL osx)
   set(CORE_SYSTEM_NAME osx)
   set(MESON_SYSTEM darwin)
@@ -115,5 +117,10 @@ string(REPLACE ";" " " WITH_TARGET_LDFLAGS "${WITH_TARGET_LDFLAGS}")
 set(PLATFORM_INCLUDES "-I${INSTALL_PREFIX_TARGET}/include -isystem ${INSTALL_PREFIX_TARGET}/include" CACHE STRING "" FORCE)
 
 set(PLATFORM_CFLAGS "${WITH_TARGET_CFLAGS} ${PLATFORM_INCLUDES}" CACHE STRING "" FORCE)
+set(PLATFORM_CPPFLAGS "${WITH_TARGET_CFLAGS} ${PLATFORM_INCLUDES}" CACHE STRING "" FORCE)
 set(PLATFORM_CXXFLAGS "${WITH_TARGET_CFLAGS} ${WITH_TARGET_CXXFLAGS} ${PLATFORM_INCLUDES}" CACHE STRING "" FORCE)
-set(PLATFORM_LDFLAGS "${WITH_TARGET_LDFLAGS} -Wl,-rpath-link=${INSTALL_PREFIX_TARGET}/lib -L${INSTALL_PREFIX_TARGET}/lib" CACHE STRING "" FORCE)
+set(PLATFORM_LDFLAGS "${WITH_TARGET_LDFLAGS} -L${INSTALL_PREFIX_TARGET}/lib" CACHE STRING "" FORCE)
+
+if(NOT APPLE)
+  list(APPEND PLATFORM_LDFLAGS "-Wl,-rpath-link=${INSTALL_PREFIX_TARGET}/lib")
+endif()
