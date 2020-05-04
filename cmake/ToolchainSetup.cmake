@@ -10,7 +10,8 @@ unset(MISSING_COMPONENTS)
 
 find_program(TARGET_CC NAMES ${WITH_HOST}-gcc
                        ${WITH_HOST}-clang
-                       ${WITH_HOST}${WITH_NDK_API}-clang)
+                       ${WITH_HOST}${WITH_NDK_API}-clang
+                       clang)
 if(NOT TARGET_CC)
   list(APPEND MISSING_COMPONENTS TARGET_CC)
 else()
@@ -19,7 +20,8 @@ endif()
 
 find_program(TARGET_CXX NAMES ${WITH_HOST}-g++
                         ${WITH_HOST}-clang++
-                        ${WITH_HOST}${WITH_NDK_API}-clang++)
+                        ${WITH_HOST}${WITH_NDK_API}-clang++
+                        clang++)
 if(NOT TARGET_CXX)
   list(APPEND MISSING_COMPONENTS TARGET_CXX)
 else()
@@ -85,7 +87,9 @@ endif()
 find_program(TARGET_OBJCOPY NAMES ${WITH_HOST}-objcopy
                                   objcopy)
 if(NOT TARGET_OBJCOPY)
-  list(APPEND MISSING_COMPONENTS TARGET_OBJCOPY)
+  if(NOT APPLE)
+    list(APPEND MISSING_COMPONENTS TARGET_OBJCOPY)
+  endif()
 else()
   message(STATUS "found TARGET_OBJCOPY: ${TARGET_OBJCOPY}")
 endif()
@@ -106,7 +110,10 @@ else()
   message(STATUS "found TARGET_STRIP: ${TARGET_STRIP}")
 endif()
 
-set(CMAKE_FIND_USE_PACKAGE_ROOT_PATH OFF)
+#set(CMAKE_FIND_USE_PACKAGE_ROOT_PATH OFF)
+#set(CMAKE_FIND_ROOT_PATH ${WITH_HOSTTOOLCHAIN})
+
+message(STATUS "Host Toolchain location: ${WITH_HOSTTOOLCHAIN}")
 
 find_program(HOST_CC NAMES ${WITH_BUILD}-gcc
                            ${WITH_BUILD}-clang
@@ -122,7 +129,7 @@ find_program(HOST_CXX NAMES ${WITH_BUILD}-g++
                             ${WITH_BUILD}-clang++
                             g++
                             clang++)
-if(NOT HOST_CC)
+if(NOT HOST_CXX)
   list(APPEND MISSING_COMPONENTS HOST_CXX)
 else()
   message(STATUS "found HOST_CXX: ${HOST_CXX}")
