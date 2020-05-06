@@ -21,3 +21,6 @@ set(PKG_CONFIGURE_OPTS_TARGET "--disable-shared"
                               "--disable-guile"
                               "--disable-tools")
 
+if(CORE_SYSTEM_NAME STREQUAL darwin_embedded)
+  list(APPEND PKG_CONFIGURE_OPTS_TARGET --disable-hardware-acceleration)
+endif()
