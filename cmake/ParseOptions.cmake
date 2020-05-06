@@ -2,8 +2,8 @@
 set(WITH_PREFIX CACHE STRING "Prefix path to install depends")
 set(WITH_TOOLCHAIN CACHE STRING "Path to toolchain")
 set(WITH_CPU CACHE STRING "Target CPU")
-set(WITH_HOST CACHE STRING "Build OS triplet")
-set(WITH_TARGET CACHE STRING "Host OS triplet")
+set(WITH_HOST CACHE STRING "Host OS triplet")
+set(WITH_TARGET CACHE STRING "Target OS triplet")
 set(WITH_KODI_SOURCE CACHE STRING "Path to kodi source (needed for TexturePacker)")
 
 if(NOT WITH_PREFIX)
