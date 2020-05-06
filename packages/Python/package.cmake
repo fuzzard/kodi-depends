@@ -20,8 +20,13 @@ set(PKG_PATCHES_TARGET "01-crosscompile.patch"
                        "03-android.patch"
                        "04-fix-ffi.patch"
                        "05-android-nl_langinfo.patch"
-                       "06-apple.patch"
-                       "08-link-intl-for-locale.patch")
+                       "06-apple.patch")
+
+if(CORE_SYSTEM_NAME STREQUAL android)
+  list(APPEND PKG_PATCHES_TARGET "08-android-disable-locale.patch")
+else()
+  list(APPEND PKG_PATCHES_TARGET "08-link-intl-for-locale.patch")
+endif()
 
 if(CORE_SYSTEM_NAME STREQUAL darwin_embedded)
   list(APPEND PKG_PATCHES "07-darwin_embedded.patch")
