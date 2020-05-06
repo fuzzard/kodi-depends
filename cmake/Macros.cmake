@@ -37,6 +37,7 @@ function(set_environment)
                        CXXFLAGS=${TARGET_CXXFLAGS}
                        CPPFLAGS=${TARGET_CPPFLAGS}
                        LDFLAGS=${TARGET_LDFLAGS}
+                       WITH_SDK_PATH=${WITH_SDK_PATH}
 
                        PATH=${INSTALL_PREFIX_HOST}/bin:$ENV{PATH}
 
