@@ -5,6 +5,7 @@ set(PKG_ARCHIVE "${PKG_NAME}-${PKG_VERSION}.tar.gz")
 set(PKG_DEPENDS_TARGET "libgcrypt"
                        "libxml2")
 set(PKG_TOOLCHAIN "autotools")
+set(PKG_PATCHES "01-all-disable-tests-docs.patch")
 
 # todo: sed patches?
 
