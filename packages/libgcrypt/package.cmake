@@ -6,7 +6,8 @@ set(PKG_DEPENDS_TARGET "libgpg-error")
 set(PKG_TOOLCHAIN "autotools")
 set(PKG_PATCHES "01-gcrypt-android-select.patch"
                 "02-fix-armv7-neon.patch"
-                "04-fix-o-flag-munging.patch")
+                "04-fix-o-flag-munging.patch"
+                "05-all-remove-docs-tests.patch")
 set(PKG_AUTORECONF ON)
 
 if(NOT WITH_CPU MATCHES "arm64")
