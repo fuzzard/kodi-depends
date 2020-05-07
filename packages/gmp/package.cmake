@@ -9,3 +9,7 @@ set(PKG_BUILD_CFLAGS_TARGET "-fPIC")
 
 set(PKG_CONFIGURE_OPTS_TARGET "--disable-shared")
 
+if(CORE_SYSTEM_NAME STREQUAL darwin_embedded)
+  list(APPEND PKG_CONFIGURE_OPTS_TARGET "--disable-assembly")
+endif()
+
