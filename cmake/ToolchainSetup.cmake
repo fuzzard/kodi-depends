@@ -111,23 +111,37 @@ else()
   message(STATUS "found TARGET_STRIP: ${TARGET_STRIP}")
 endif()
 
+set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
 find_program(HOST_CC NAMES ${WITH_HOST}-gcc
                            ${WITH_HOST}-clang
                            gcc
                            clang
-                     PATHS ${WITH_HOSTTOOLCHAIN})
+                     PATHS ${WITH_HOSTTOOLCHAIN}/usr/bin
+                     NO_DEFAULT_PATH)
+set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM ONLY)
+find_program(HOST_CC NAMES ${WITH_HOST}-gcc
+                           ${WITH_HOST}-clang
+                           gcc
+                           clang)
 if(NOT HOST_CC)
   list(APPEND MISSING_COMPONENTS HOST_CC)
 else()
   message(STATUS "found HOST_CC: ${HOST_CC}")
 endif()
 
+set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
 find_program(HOST_CXX NAMES ${WITH_HOST}-g++
                             ${WITH_HOST}-clang++
                             g++
                             clang++
-                      PATHS ${WITH_HOSTTOOLCHAIN})
-if(NOT HOST_CC)
+                      PATHS ${WITH_HOSTTOOLCHAIN}/usr/bin
+                      NO_DEFAULT_PATH)
+set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM ONLY)
+find_program(HOST_CXX NAMES ${WITH_HOST}-g++
+                            ${WITH_HOST}-clang++
+                            g++
+                            clang++)
+if(NOT HOST_CXX)
   list(APPEND MISSING_COMPONENTS HOST_CXX)
 else()
   message(STATUS "found HOST_CXX: ${HOST_CXX}")

@@ -9,13 +9,19 @@ set(PKG_TOOLCHAIN "cmake")
 set(PKG_PATCHES "01-android.patch"
                 "02-all-symbol-rename-gnutls-clash.patch")
 
+if(CORE_SYSTEM_NAME STREQUAL darwin_embedded)
+  list(APPEND PKG_PATCHES_TARGET "03-apple-findiconv-cross.patch")
+endif()
+
 # todo: sed patches
 
 # Static build of DCLIENT_PLUGIN_CLIENT_ED25519 fails
 # plugins/auth/ref10/crypto_hash_sha512.h:5:10: fatal error: 'mysql/service_sha2.h' file not found
 
-set(PKG_CMAKE_OPTS_TARGET "-DAUTH_GSSAPI=OFF"
-                          "-DWITH_UNITTEST:BOOL=OFF"
+set(PKG_CMAKE_OPTS_TARGET "-DAUTH_GSSAPI_PLUGIN_TYPE=OFF"
+                          "-DCLIENT_PLUGIN_DIALOG=STATIC"
+                          "-DWITH_SSL=ON"
+                          "-DWITH_UNIT_TESTS:BOOL=OFF"
                           "-DWITH_EXTERNAL_ZLIB:BOOL=ON"
                           "-DWITH_CURL:BOOL=OFF"
                           "-DCLIENT_PLUGIN_SHA256_PASSWORD=STATIC"
