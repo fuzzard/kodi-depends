@@ -9,3 +9,6 @@ set(PKG_PATCHES "01-disable_testsuite.patch")
 set(PKG_CONFIGURE_OPTS_TARGET "--disable-shared"
                               "--disable-openssl")
 
+if(CORE_SYSTEM_NAME STREQUAL darwin_embedded)
+  list(APPEND PKG_CONFIGURE_OPTS_TARGET "--disable-assembler")
+endif()
