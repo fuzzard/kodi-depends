@@ -21,11 +21,18 @@ set(PKG_PATCHES_TARGET "01-crosscompile.patch"
                        "03-android.patch"
                        "04-fix-ffi.patch"
                        "05-android-nl_langinfo.patch"
-                       "06-apple.patch"
-                       "08-link-intl-for-locale.patch")
+                       "06-apple.patch")
 
-if(CORE_SYSTEM_NAME STREQUAL darwin_embedded)
-  list(APPEND PKG_PATCHES_TARGET "07-darwin_embedded.patch")
+if(APPLE)
+  if(CORE_SYSTEM_NAME STREQUAL darwin_embedded)
+    list(APPEND PKG_PATCHES_TARGET "07-darwin_embedded.patch")
+  endif()
+  list(APPEND PKG_PATCHES_TARGET "08-apple-link-intl-for-locale.patch")
+elseif(CORE_SYSTEM_NAME STREQUAL android)
+# has android been patched elsewhere to disable locale already?
+#  list(APPEND PKG_PATCHES_TARGET "08-android-disable-locale.patch")
+else()
+  list(APPEND PKG_PATCHES_TARGET "08-link-intl-for-locale.patch")
 endif()
 
 set(PKG_CONFIGURE_OPTS_HOST "--disable-shared"
@@ -45,6 +52,14 @@ set(PKG_CONFIGURE_OPTS_TARGET "ac_cv_func_gethostbyname_r=no"
                               "--with-system-ffi"
                               "--without-pymalloc"
                               "--enable-ipv6")
+
+if(CORE_SYSTEM_NAME STREQUAL darwin_embedded)
+  list(APPEND PKG_CONFIGURE_OPTS_TARGET "ac_cv_func_clock_settime=no"
+                                        "ac_cv_func_sigaltstack=no")
+# untested if required in python yet
+#                                        "ac_cv_func_vfork_works=no"
+#                                        "ac_cv_func_fork=no")
+endif()
 
 set(PKG_MAKE_OPTS_TARGET PYTHON_FOR_BUILD=${INSTALL_PREFIX_HOST}/bin/python3
                          HOST_PGEN=${INSTALL_PREFIX_HOST}/bin/pgen
