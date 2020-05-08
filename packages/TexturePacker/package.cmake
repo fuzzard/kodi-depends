@@ -10,4 +10,8 @@ set(PKG_AUTORECONF ON)
 
 set(PKG_CONFIGURE_OPTS_HOST "KODI_SRC_DIR=${WITH_KODI_SOURCE}"
                             "EXTRA_DEFINES=-L${INSTALL_PREFIX_HOST}/lib"
-                            "--enable-static")
+                            "STATIC_FLAG=-enable-static")
+
+if(APPLE)
+  set(PKG_BUILD_CFLAGS_HOST "-DTARGET_DARWIN")
+endif()
