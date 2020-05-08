@@ -1,6 +1,6 @@
 set(PKG_NAME "TexturePacker")
 set(PKG_VERSION "1.0")
-set(PKG_SHA256 "33f613ae3ea68aa161d261ca03202839b2e7acbaa0229071bf8b618daa5b3a38")
+set(PKG_SHA256 "6cb397bba64b13e32b9575832d2bcd834ac583018a8f487890abfcc3ba87a365")
 set(PKG_ARCHIVE "${PKG_NAME}-${PKG_VERSION}.tar.gz")
 set(PKG_DEPENDS_HOST "toolchain"
                        "libpng"
