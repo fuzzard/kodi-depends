@@ -5,8 +5,11 @@ set(PKG_ARCHIVE "${PKG_NAME}-${PKG_VERSION}.tar.bz2")
 set(PKG_DEPENDS_TARGET "toolchain"
                        "freetype"
                        "expat"
-                       "libiconv"
-                       "libuuid")
+                       "libiconv")
+if(NOT APPLE)
+  list(APPEND PKG_DEPENDS_TARGET "libuuid")
+endif()
+
 set(PKG_TOOLCHAIN "autotools")
 set(PKG_PATCHES "01-disable-test.patch"
                 "02-lconv.patch"
