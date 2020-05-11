@@ -68,6 +68,7 @@ function(set_environment)
                        BUILD_CC=${HOST_CC}
                        BUILD_CXX=${HOST_CXX}
 
+                       WITH_SDK_PATH=${WITH_SDK_PATH}
                        ${OSX_DEPLOYMENT_TARGET}
 
                        PARENT_SCOPE)
