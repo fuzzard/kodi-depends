@@ -41,12 +41,12 @@ add_dependencies(kodi-depends
                  libudfread-target
                  spdlog-target
                  libbluray-target
-                 # mariadb-target symbol clashes, disable for now
+                 mariadb-target
                  libnfs-target
                  samba-target
                  libmicrohttpd-target
-                 pillow-target
-                 pycryptodome-target
+                 #pillow-target
+                 #pycryptodome-target
                  setuptools-target)
 
 if(NOT CORE_SYSTEM_NAME STREQUAL darwin_embedded AND NOT CORE_SYSTEM_NAME STREQUAL android)
