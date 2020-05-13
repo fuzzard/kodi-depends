@@ -87,8 +87,7 @@ elseif(CORE_SYSTEM_NAME STREQUAL android)
 elseif(CORE_SYSTEM_NAME STREQUAL darwin_embedded)
   list(APPEND PKG_CONFIGURE_OPTS_TARGET "--arch=${WITH_CPU}"
                                         "--as=${TARGET_AS}"
-                                        "--yasmexe=$(NATIVEPREFIX)/bin/yasm"
-                                        "--disable-decoder=mpeg_xvmc"
+                                        "--x86asmexe=$(NATIVEPREFIX)/bin/yasm"
                                         "--disable-crystalhd"
                                         "--enable-videotoolbox"
                                         "--target-os=darwin")
