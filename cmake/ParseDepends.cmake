@@ -65,6 +65,11 @@ if(CORE_SYSTEM_NAME STREQUAL osx)
                    libsdl-target)
 endif()
 
+if(CORE_SYSTEM_NAME STREQUAL darwin_embedded)
+  add_dependencies(kodi-depends
+                   iosentitlements-target)
+endif()
+
 if(NOT CORE_SYSTEM_NAME STREQUAL osx AND NOT CORE_SYSTEM_NAME STREQUAL darwin_embedded AND NOT CORE_SYSTEM_NAME STREQUAL android)
   add_dependencies(kodi-depends
                    libusb-target)
