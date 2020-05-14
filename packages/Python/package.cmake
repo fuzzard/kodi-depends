@@ -30,6 +30,8 @@ endif()
 
 if(CORE_SYSTEM_NAME STREQUAL darwin_embedded)
   list(APPEND PKG_PATCHES_TARGET "08-darwin_embedded.patch")
+  set(PKG_BUILD_LDFLAGS_TARGET "-framework CoreFoundation"
+                               "-liconv")
 endif()
 
 # buildroot patches
@@ -55,6 +57,11 @@ set(PKG_CONFIGURE_OPTS_TARGET "ac_cv_func_gethostbyname_r=no"
                               "--with-system-ffi"
                               "--without-pymalloc"
                               "--enable-ipv6")
+
+if(CORE_SYSTEM_NAME STREQUAL darwin_embedded)
+  list(APPEND PKG_CONFIGURE_OPTS_TARGET "ac_cv_func_clock_settime=no"
+                                        "ac_cv_func_sigaltstack=no")
+endif()
 
 # patch specific options
 list(APPEND PKG_CONFIGURE_OPTS_TARGET "--disable-pyc-build"
