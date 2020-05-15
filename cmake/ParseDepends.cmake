@@ -67,6 +67,7 @@ endif()
 
 if(CORE_SYSTEM_NAME STREQUAL darwin_embedded)
   add_dependencies(kodi-depends
+                   gen_entitlements-host
                    iosentitlements-target)
 endif()
 
