@@ -62,7 +62,7 @@ endif()
 
 if(CORE_SYSTEM_NAME STREQUAL osx)
   add_dependencies(kodi-depends
-                   libsdl-target)
+                   SDL-target)
 endif()
 
 if(CORE_SYSTEM_NAME STREQUAL darwin_embedded)
