@@ -11,4 +11,8 @@ set(PKG_CONFIGURE_OPTS_TARGET "--disable-shared")
 
 if(CORE_SYSTEM_NAME STREQUAL darwin_embedded)
   list(APPEND PKG_CONFIGURE_OPTS_TARGET "--disable-assembly")
+elseif(CORE_PLATFORM_NAME STREQUAL osx)
+  list(APPEND PKG_CONFIGURE_OPTS_TARGET "CC_FOR_BUILD=${HOST_CC}"
+                                        "CPP_FOR_BUILD=${HOST_CC} -E"
+                                        "--with-pic")
 endif()
