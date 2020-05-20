@@ -84,13 +84,18 @@ elseif(CORE_SYSTEM_NAME STREQUAL android)
                                           "--disable-mmx"
                                           "--extra-cflags=-no-integrated-as -mno-stackrealign")
   endif()
-elseif(CORE_SYSTEM_NAME STREQUAL darwin_embedded)
-  list(APPEND PKG_CONFIGURE_OPTS_TARGET "--arch=${WITH_CPU}"
-                                        "--as=${TARGET_AS}"
-                                        "--x86asmexe=$(NATIVEPREFIX)/bin/yasm"
-                                        "--disable-crystalhd"
+elseif(CORE_SYSTEM_NAME STREQUAL darwin_embedded OR CORE_SYSTEM_NAME STREQUAL osx)
+  list(APPEND PKG_CONFIGURE_OPTS_TARGET "--disable-crystalhd"
                                         "--enable-videotoolbox"
                                         "--target-os=darwin")
+
+  if(CORE_SYSTEM_NAME STREQUAL darwin_embedded)
+    list(APPEND PKG_CONFIGURE_OPTS_TARGET "--arch=${WITH_CPU}"
+                                          "--as=${TARGET_AS}"
+                                          "--x86asmexe=$(NATIVEPREFIX)/bin/yasm")
+  elseif(CORE_SYSTEM_NAME STREQUAL osx)
+    list(APPEND PKG_CONFIGURE_OPTS_TARGET "--disable-securetransport")
+  endif()
 endif()
 
 if(WITH_CPU MATCHES arm)
