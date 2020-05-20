@@ -28,10 +28,14 @@ if(CORE_PLATFORM_NAME_LC STREQUAL android)
   list(APPEND PKG_PATCHES_TARGET "08-android-skip-locale.patch")
 endif()
 
-if(CORE_SYSTEM_NAME STREQUAL darwin_embedded)
-  list(APPEND PKG_PATCHES_TARGET "08-darwin_embedded.patch")
+if(APPLE)
   set(PKG_BUILD_LDFLAGS_TARGET "-framework CoreFoundation"
                                "-liconv")
+  if(CORE_SYSTEM_NAME STREQUAL darwin_embedded)
+    list(APPEND PKG_PATCHES_TARGET "08-darwin_embedded.patch")
+  elseif()
+    list(APPEND PKG_BUILD_LDFLAGS_TARGET "-framework SystemConfiguration")
+  endif()
 endif()
 
 # buildroot patches
