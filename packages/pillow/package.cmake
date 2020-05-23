@@ -12,7 +12,11 @@ set(PKG_DEPENDS_TARGET "Python-host"
 set(PKG_TOOLCHAIN "custom")
 set(PKG_PATCHES "01-pillow-crosscompile.patch")
 
-set(PKG_LDSHARED "${TARGET_CC} -shared")
+if(APPLE)
+  set(PKG_LDSHARED "${TARGET_CC} -bundle -undefined dynamic_lookup")
+else()
+  set(PKG_LDSHARED "${TARGET_CC} -shared")
+endif()
 
 if(CORE_SYSTEM_NAME STREQUAL android)
   list(APPEND PKG_DEPENDS_TARGET "dummy-lib")
