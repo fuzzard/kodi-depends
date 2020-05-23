@@ -6,7 +6,8 @@ set(PKG_DEPENDS_TARGET "toolchain")
 set(PKG_TOOLCHAIN "custom")
 
 set(PKG_CONFIGURE_OPTS_TARGET "--disable-shared"
-                              "--with-png=no")
+                              "--with-png=no"
+                              "--prefix=${INSTALL_PREFIX_TARGET}")
 
 set(PKG_CONFIGURE_COMMAND_TARGET ./autogen.sh
                          COMMAND ./configure ${PKG_CONFIGURE_OPTS_TARGET})
