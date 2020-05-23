@@ -20,7 +20,6 @@ execute_process(COMMAND bash -c "${XCODE_PATH}/usr/bin/xcodebuild -version -sdk 
 
 # Workaround for libtool adding bind_at_load ld flag via libtoolise/autoreconf
 # anything >= 10.4 will suffice
-set(OSX_DEPLOYMENT_TARGET MACOSX_DEPLOYMENT_TARGET=10.9)
 
 set(WITH_SDK_PLATFORM_VERSION "${SDK_VER}" CACHE STRING "")
 set(WITH_SDK_PATH "${SDK_PATH}" CACHE STRING "")
